@@ -18,7 +18,9 @@
    === RESET ===
    ============================================================ */
 
-* {
+*,
+*::before,
+*::after {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -42,20 +44,63 @@
     --accent-hover: #4752c4;
     --radius: 12px;
     --radius-sm: 8px;
+    --transition: 0.2s ease;
 }
+
+/* ============================================================
+   === СКРОЛЛБАР И ВЫДЕЛЕНИЕ ===
+   ============================================================ */
+
+::selection {
+    background: rgba(88, 101, 242, 0.35);
+    color: var(--text);
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--bg);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--bg-elevated);
+    border-radius: 5px;
+    border: 2px solid var(--bg);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--border-strong);
+}
+
+/* ============================================================
+   === БАЗОВОЕ ===
+   ============================================================ */
 
 html {
     scroll-behavior: smooth;
 }
 
 body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', Roboto, 'Helvetica Neue', Arial, sans-serif;
     background: var(--bg);
     color: var(--text);
     line-height: 1.6;
     min-height: 100vh;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+}
+
+img {
+    max-width: 100%;
+    display: block;
+}
+
+a {
+    color: inherit;
 }
 
 /* ============================================================
@@ -92,12 +137,12 @@ body {
     object-fit: cover;
     border: 3px solid var(--bg-card);
     box-shadow: 0 0 0 1px var(--border-strong);
-    transition: box-shadow 0.25s ease;
-    display: block;
+    transition: box-shadow 0.25s ease, transform 0.25s ease;
 }
 
 .avatar:hover {
     box-shadow: 0 0 0 1px var(--accent);
+    transform: scale(1.03);
 }
 
 .status-dot {
@@ -109,6 +154,11 @@ body {
     background: var(--accent);
     border-radius: 50%;
     border: 3px solid var(--bg);
+    transition: background var(--transition);
+}
+
+.status-dot:hover {
+    background: var(--accent-hover);
 }
 
 .profile-info {
@@ -143,14 +193,14 @@ body {
 .id-badge {
     background: var(--bg-elevated);
     color: var(--text-secondary);
-    font-family: 'SF Mono', 'Consolas', 'Monaco', monospace;
+    font-family: 'SF Mono', 'Consolas', 'Monaco', 'Courier New', monospace;
     font-size: 12px;
     padding: 3px 8px;
     border-radius: 5px;
     border: 1px solid var(--border);
     user-select: all;
     cursor: pointer;
-    transition: color 0.2s ease, border-color 0.2s ease;
+    transition: color var(--transition), border-color var(--transition);
 }
 
 .id-badge:hover {
@@ -204,6 +254,12 @@ body {
     background: var(--bg-card);
     color: var(--text-secondary);
     letter-spacing: 0.2px;
+    transition: border-color var(--transition), color var(--transition);
+}
+
+.badge:hover {
+    border-color: var(--border-strong);
+    color: var(--text);
 }
 
 .badge svg {
@@ -235,13 +291,18 @@ body {
     text-decoration: none;
     font-size: 14px;
     font-weight: 600;
-    transition: background 0.2s ease, border-color 0.2s ease;
+    transition: background var(--transition), border-color var(--transition), transform var(--transition);
     cursor: pointer;
 }
 
 .btn:hover {
     background: var(--bg-card-hover);
     border-color: var(--accent);
+    transform: translateY(-1px);
+}
+
+.btn:active {
+    transform: translateY(0);
 }
 
 .btn.primary {
@@ -312,11 +373,12 @@ body {
     border-radius: var(--radius-sm);
     padding: 14px 12px;
     text-align: center;
-    transition: border-color 0.2s ease;
+    transition: border-color var(--transition), background var(--transition);
 }
 
 .stat-box:hover {
     border-color: var(--border-strong);
+    background: var(--bg-card-hover);
 }
 
 .stat-label {
@@ -337,7 +399,7 @@ body {
 
 .stat-value.mono {
     font-size: 12px;
-    font-family: 'SF Mono', 'Consolas', 'Monaco', monospace;
+    font-family: 'SF Mono', 'Consolas', 'Monaco', 'Courier New', monospace;
     font-weight: 600;
     word-break: break-all;
 }
@@ -357,7 +419,7 @@ body {
     border: 1px solid var(--border);
     border-radius: var(--radius);
     padding: 20px;
-    transition: background 0.2s ease, border-color 0.2s ease;
+    transition: background var(--transition), border-color var(--transition);
     display: flex;
     gap: 16px;
     align-items: flex-start;
@@ -378,6 +440,11 @@ body {
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
+    transition: border-color var(--transition);
+}
+
+.project-card:hover .project-icon {
+    border-color: var(--border-strong);
 }
 
 .project-icon svg {
@@ -388,6 +455,7 @@ body {
     stroke-width: 1.8;
     stroke-linecap: round;
     stroke-linejoin: round;
+    transition: stroke var(--transition);
 }
 
 .project-card:hover .project-icon svg {
@@ -427,6 +495,12 @@ body {
     background: var(--bg-elevated);
     color: var(--text-muted);
     border: 1px solid var(--border);
+    transition: color var(--transition), border-color var(--transition);
+}
+
+.project-card:hover .tag {
+    color: var(--text-secondary);
+    border-color: var(--border-strong);
 }
 
 /* ============================================================
@@ -442,7 +516,7 @@ body {
     gap: 20px;
     align-items: center;
     flex-wrap: wrap;
-    transition: background 0.2s ease, border-color 0.2s ease;
+    transition: background var(--transition), border-color var(--transition);
 }
 
 .community-card:hover {
@@ -460,6 +534,11 @@ body {
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
+    transition: border-color var(--transition);
+}
+
+.community-card:hover .community-icon {
+    border-color: var(--border-strong);
 }
 
 .community-icon svg {
@@ -487,6 +566,11 @@ body {
     margin-bottom: 12px;
 }
 
+.community-desc strong {
+    color: var(--text);
+    font-weight: 600;
+}
+
 .community-invite {
     display: inline-flex;
     align-items: center;
@@ -498,11 +582,16 @@ body {
     text-decoration: none;
     font-size: 14px;
     font-weight: 600;
-    transition: background 0.2s ease;
+    transition: background var(--transition), transform var(--transition);
 }
 
 .community-invite:hover {
     background: var(--accent-hover);
+    transform: translateY(-1px);
+}
+
+.community-invite:active {
+    transform: translateY(0);
 }
 
 .community-invite svg {
@@ -528,7 +617,7 @@ body {
 .footer a {
     color: var(--text-secondary);
     text-decoration: none;
-    transition: color 0.2s ease;
+    transition: color var(--transition);
 }
 
 .footer a:hover {
@@ -588,6 +677,10 @@ body {
         flex-direction: column;
         text-align: center;
     }
+
+    .community-invite {
+        justify-content: center;
+    }
 }
 
 /* ============================================================
@@ -596,7 +689,8 @@ body {
 
 .fade-in {
     opacity: 0;
-    animation: fadeIn 0.5s ease forwards;
+    transform: translateY(8px);
+    animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 .fade-in.d1 { animation-delay: 0.05s; }
@@ -605,7 +699,22 @@ body {
 .fade-in.d4 { animation-delay: 0.2s; }
 
 @keyframes fadeIn {
-    to { opacity: 1; }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Уважение к настройкам пользователя (уменьшение анимаций) */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
 }
 </style>
 </head>
@@ -624,7 +733,7 @@ body {
                 class="avatar"
                 onerror="this.src='https://cdn.discordapp.com/embed/avatars/0.png'"
             />
-            <div class="status-dot"></div>
+            <div class="status-dot" title="Скучно в дискорде..."></div>
         </div>
 
         <div class="profile-info">
@@ -729,7 +838,6 @@ body {
                     <svg viewBox="0 0 24 24">
                         <path d="M6 12h4M14 12h4"/>
                         <path d="M8 8v8M16 8v8"/>
-                        <path d="M6 12c0-3.31 2.69-6 6-6s6 2.69 6 6-2.69 6-6 6-6-2.69-6-6z" opacity="0"/>
                         <circle cx="8" cy="16" r="2"/>
                         <circle cx="16" cy="16" r="2"/>
                         <path d="M10 16h4"/>
@@ -788,29 +896,29 @@ body {
 </div>
 
 <script>
-document.getElementById('year').textContent = new Date().getFullYear();
+    // ============================================================
+    // === ГОД В ФУТЕРЕ ===
+    // ============================================================
+    document.getElementById('year').textContent = new Date().getFullYear();
 
-document.querySelectorAll('.id-badge').forEach(function(el) {
-    el.addEventListener('click', function() {
-        const text = el.textContent.trim();
-        navigator.clipboard.writeText(text).then(function() {
-            const original = el.textContent;
-            el.textContent = '✓ Скопировано';
-            el.style.color = '#ffffff';
-            setTimeout(function() {
-                el.textContent = original;
-                el.style.color = '';
-            }, 1200);
-        }).catch(function() {});
+    // ============================================================
+    // === КОПИРОВАНИЕ DISCORD ID ПО КЛИКУ ===
+    // ============================================================
+    document.querySelectorAll('.id-badge').forEach(function(el) {
+        el.addEventListener('click', function() {
+            const text = el.textContent.trim();
+            navigator.clipboard.writeText(text).then(function() {
+                const original = el.textContent;
+                el.textContent = '✓ Скопировано';
+                el.style.color = '#ffffff';
+                setTimeout(function() {
+                    el.textContent = original;
+                    el.style.color = '';
+                }, 1200);
+            }).catch(function() {});
+        });
     });
-});
 </script>
 
 </body>
 </html>
-```
-
-Готово. В проекте Arcy:
-
-- **Описание:** убрал упоминание Cloudflare D1
-- **Теги:** оставил только `Node.js` и `discord.js v14`, убрал `Cloudflare D1` и `Canvas`
