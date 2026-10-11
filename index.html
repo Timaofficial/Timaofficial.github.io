@@ -786,12 +786,12 @@ a {
                 <div class="stat-value mono">1282745893447274507</div>
             </div>
             <div class="stat-box">
-                <div class="stat-label">На GitHub с</div>
-                <div class="stat-value">2024</div>
+                <div class="stat-label">Уровень</div>
+                <div class="stat-value" id="my-level">—</div>
             </div>
             <div class="stat-box">
-                <div class="stat-label">Проектов</div>
-                <div class="stat-value">2</div>
+                <div class="stat-label">Конфеты</div>
+                <div class="stat-value" id="my-flowers">—</div>
             </div>
         </div>
     </section>
@@ -944,30 +944,39 @@ a {
         el.title = STATUS_MAP[status] || 'Не в сети';
     }
 
-    function applyMyProfile(profile) {
-        if (!profile) return;
+    // Данные профиля берём из stats.topUsers (там все игроки с их аватарами и экономикой)
+    function applyMyProfileFromStats(stats) {
+        if (!stats || !stats.topUsers) return;
 
-        const avatarEl = document.getElementById('my-avatar');
-        if (profile.avatarURL) avatarEl.src = profile.avatarURL;
+        const me = stats.topUsers.find(function(u) { return u.id === MY_ID; });
+        if (!me) return;
 
-        document.getElementById('my-name').textContent = profile.displayName || profile.username || 'Tima';
-        document.getElementById('my-username').textContent = '@' + (profile.username || 'timaofficial1');
+        // Аватар
+        if (me.avatarURL) {
+            const img = document.getElementById('my-avatar');
+            // Просим 256 размер для качества
+            img.src = me.avatarURL.replace(/size=\d+/, 'size=256');
+        }
 
-        applyStatusDot(document.getElementById('my-status'), profile.status);
+        // Имя и username
+        if (me.displayName) document.getElementById('my-name').textContent = me.displayName;
+        if (me.username) document.getElementById('my-username').textContent = '@' + me.username;
 
+        // Экономика
+        document.getElementById('my-flowers').textContent = me.flowers || 0;
+        document.getElementById('my-level').textContent = me.level || 1;
+
+        // Статус — показываем как «активность» по последнему сообщению
         const activityEl = document.getElementById('my-activity');
-        if (profile.activity && profile.activity.name) {
-            const type = profile.activity.type;
-            let prefix = '';
-            if (type === 0) prefix = 'Играет в ';
-            else if (type === 1) prefix = 'Стримит ';
-            else if (type === 2) prefix = 'Слушает ';
-            else if (type === 3) prefix = 'Смотрит ';
-            else if (type === 5) prefix = 'Соревнуется в ';
-            activityEl.textContent = prefix + profile.activity.name;
+        if (stats.stats24h && stats.stats24h.activeUsers > 0) {
+            activityEl.textContent = 'Скучно в дискорде...';
         } else {
             activityEl.textContent = 'Скучно в дискорде...';
         }
+
+        // Точка статуса — по умолчанию offline (в stats.json нет presence)
+        // Можно убрать точку вовсе, если не хочется вводить в заблуждение.
+        applyStatusDot(document.getElementById('my-status'), 'offline');
     }
 
     function applyGuildStats(stats) {
@@ -1048,25 +1057,15 @@ a {
         fetchJson('data/stats.json')
             .then(function(stats) {
                 applyGuildStats(stats);
-                if (stats.topUsers) applyTopUsers(stats.topUsers);
+                applyTopUsers(stats.topUsers);
+                applyMyProfileFromStats(stats);
             })
             .catch(function(err) {
                 console.warn('[STATS] Не удалось загрузить stats.json:', err.message);
             });
     }
 
-    function loadMyProfile() {
-        fetchJson('data/users/' + MY_ID + '.json')
-            .then(applyMyProfile)
-            .catch(function(err) {
-                console.warn('[PROFILE] Не удалось загрузить профиль:', err.message);
-            });
-    }
-
-    loadMyProfile();
     loadStats();
-
-    setInterval(loadMyProfile, 60000);
     setInterval(loadStats, 60000);
 })();
 </script>
