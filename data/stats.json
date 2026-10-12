@@ -15,40 +15,6 @@
     "voiceMinutes": 0,
     "activeUsers": 2
   },
-  "updatedAt": "2026-10-12T11:58:29.379Z",
-  "topUsers": [
-    {
-      "id": "1282745893447274507",
-      "username": "timaofficial1",
-      "displayName": "Tima",
-      "avatarURL": "https://cdn.discordapp.com/avatars/1282745893447274507/7811f428e65c192bb1af65dfd9fb4748.webp?size=128",
-      "flowers": 97,
-      "tickets": 0,
-      "arcyCoins": 33,
-      "totalCollected": 497,
-      "level": 3
-    },
-    {
-      "id": "824263946496245811",
-      "username": "_timurus",
-      "displayName": "λТимурусλ",
-      "avatarURL": "https://cdn.discordapp.com/avatars/824263946496245811/3177b3aa832a44efba71e80a0a5babbe.webp?size=128",
-      "flowers": 52,
-      "tickets": 0,
-      "arcyCoins": 0,
-      "totalCollected": 52,
-      "level": 1
-    },
-    {
-      "id": "717427729070293014",
-      "username": "timagames",
-      "displayName": "Mylifegoodandbad",
-      "avatarURL": "https://cdn.discordapp.com/avatars/717427729070293014/b9ef21e69420a922df9539ff3396d46e.webp?size=128",
-      "flowers": 0,
-      "tickets": 0,
-      "arcyCoins": 0,
-      "totalCollected": 0,
-      "level": 1
-    }
-  ]
+  "updatedAt": "2026-10-12T12:07:08.725Z",
+  "topUsers": []
 }
