@@ -944,29 +944,23 @@ a {
         el.title = STATUS_MAP[status] || 'Не в сети';
     }
 
-    // Данные профиля берём из stats.topUsers (там все игроки с их аватарами и экономикой)
     function applyMyProfileFromStats(stats) {
         if (!stats || !stats.topUsers) return;
 
         const me = stats.topUsers.find(function(u) { return u.id === MY_ID; });
         if (!me) return;
 
-        // Аватар
         if (me.avatarURL) {
             const img = document.getElementById('my-avatar');
-            // Просим 256 размер для качества
             img.src = me.avatarURL.replace(/size=\d+/, 'size=256');
         }
 
-        // Имя и username
         if (me.displayName) document.getElementById('my-name').textContent = me.displayName;
         if (me.username) document.getElementById('my-username').textContent = '@' + me.username;
 
-        // Экономика
         document.getElementById('my-flowers').textContent = me.flowers || 0;
         document.getElementById('my-level').textContent = me.level || 1;
 
-        // Статус — показываем как «активность» по последнему сообщению
         const activityEl = document.getElementById('my-activity');
         if (stats.stats24h && stats.stats24h.activeUsers > 0) {
             activityEl.textContent = 'Скучно в дискорде...';
@@ -974,8 +968,6 @@ a {
             activityEl.textContent = 'Скучно в дискорде...';
         }
 
-        // Точка статуса — по умолчанию offline (в stats.json нет presence)
-        // Можно убрать точку вовсе, если не хочется вводить в заблуждение.
         applyStatusDot(document.getElementById('my-status'), 'offline');
     }
 
