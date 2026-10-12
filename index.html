@@ -34,6 +34,7 @@
     --text-muted: #5c5c5c;
     --accent: #5865f2;
     --accent-hover: #4752c4;
+    --gold: #FFD700;
     --online: #23a55a;
     --idle: #f0b232;
     --dnd: #f23f43;
@@ -201,18 +202,6 @@ a {
     margin-bottom: 14px;
 }
 
-.status-text::before {
-    content: '«';
-    color: var(--text-muted);
-    margin-right: 2px;
-}
-
-.status-text::after {
-    content: '»';
-    color: var(--text-muted);
-    margin-left: 2px;
-}
-
 .badges {
     display: flex;
     gap: 6px;
@@ -287,6 +276,17 @@ a {
 .btn.primary:hover {
     background: var(--accent-hover);
     border-color: var(--accent-hover);
+}
+
+.btn.gold {
+    background: rgba(255, 215, 0, 0.1);
+    border-color: rgba(255, 215, 0, 0.4);
+    color: var(--gold);
+}
+
+.btn.gold:hover {
+    background: rgba(255, 215, 0, 0.18);
+    border-color: var(--gold);
 }
 
 .btn svg {
@@ -639,6 +639,140 @@ a {
     color: var(--text);
 }
 
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    padding: 24px;
+    animation: modalFadeIn 0.25s ease;
+}
+
+.modal-overlay.active {
+    display: flex;
+}
+
+@keyframes modalFadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes modalSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px) scale(0.96);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.modal {
+    background: var(--bg-card);
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius);
+    max-width: 900px;
+    width: 100%;
+    max-height: 90vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    animation: modalSlideIn 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 24px 80px rgba(0, 0, 0, 0.6);
+}
+
+.modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--border);
+    gap: 12px;
+}
+
+.modal-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.modal-title svg {
+    width: 18px;
+    height: 18px;
+    stroke: var(--gold);
+    fill: none;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.modal-close {
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    background: var(--bg-elevated);
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background var(--transition), color var(--transition), border-color var(--transition);
+    flex-shrink: 0;
+    font-size: 18px;
+    line-height: 1;
+    font-family: inherit;
+}
+
+.modal-close:hover {
+    background: var(--bg-card-hover);
+    color: var(--text);
+    border-color: var(--border-strong);
+}
+
+.modal-body {
+    padding: 20px;
+    overflow-y: auto;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+}
+
+.modal-image {
+    max-width: 100%;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+    background: var(--bg);
+    display: block;
+}
+
+.modal-hint {
+    font-size: 13px;
+    color: var(--text-muted);
+    text-align: center;
+    padding: 8px 16px;
+    background: var(--bg-elevated);
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    width: 100%;
+}
+
+.modal-hint strong {
+    color: var(--text-secondary);
+    font-weight: 600;
+}
+
 @media (max-width: 600px) {
     .container {
         padding: 40px 16px 60px;
@@ -691,6 +825,18 @@ a {
 
     .community-invite {
         justify-content: center;
+    }
+
+    .modal-body {
+        padding: 12px;
+    }
+
+    .modal-header {
+        padding: 12px 14px;
+    }
+
+    .modal-title {
+        font-size: 14px;
     }
 }
 
@@ -765,6 +911,14 @@ a {
                     <svg viewBox="0 0 24 24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"></path></svg>
                     GitHub
                 </a>
+                <button class="btn gold" id="open-release-modal" type="button">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="11" width="18" height="10" rx="2"></rect>
+                        <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                        <circle cx="12" cy="16" r="1" fill="currentColor"></circle>
+                    </svg>
+                    Обновление
+                </button>
             </div>
         </div>
     </header>
@@ -902,6 +1056,27 @@ a {
 
 </div>
 
+<div class="modal-overlay" id="release-modal" role="dialog" aria-modal="true" aria-labelledby="release-modal-title">
+    <div class="modal">
+        <div class="modal-header">
+            <div class="modal-title" id="release-modal-title">
+                <svg viewBox="0 0 24 24">
+                    <rect x="3" y="11" width="18" height="10" rx="2"></rect>
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                </svg>
+                Обновление v3.5.0
+            </div>
+            <button class="modal-close" id="close-release-modal" type="button" aria-label="Закрыть">✕</button>
+        </div>
+        <div class="modal-body">
+            <img class="modal-image" id="release-modal-image" alt="Обновление Arcy Bot v3.5.0" src="">
+            <div class="modal-hint">
+                <strong>Спойлер:</strong> список изменений откроется позже
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
 (function() {
     'use strict';
@@ -960,13 +1135,6 @@ a {
 
         document.getElementById('my-flowers').textContent = me.flowers || 0;
         document.getElementById('my-level').textContent = me.level || 1;
-
-        const activityEl = document.getElementById('my-activity');
-        if (stats.stats24h && stats.stats24h.activeUsers > 0) {
-            activityEl.textContent = 'Скучно в дискорде...';
-        } else {
-            activityEl.textContent = 'Скучно в дискорде...';
-        }
 
         applyStatusDot(document.getElementById('my-status'), 'offline');
     }
@@ -1059,6 +1227,59 @@ a {
 
     loadStats();
     setInterval(loadStats, 60000);
+
+    // ============================================================
+    // === МОДАЛЬНОЕ ОКНО ОБНОВЛЕНИЯ ===
+    // ============================================================
+
+    const modal = document.getElementById('release-modal');
+    const openBtn = document.getElementById('open-release-modal');
+    const closeBtn = document.getElementById('close-release-modal');
+    const modalImage = document.getElementById('release-modal-image');
+
+    const RELEASE_SVG_URL = 'assets/release_v3.5.0.svg';
+    let svgLoaded = false;
+
+    function loadSvgIntoModal() {
+        if (svgLoaded) return;
+        fetch(RELEASE_SVG_URL, { cache: 'no-store' })
+            .then(function(r) {
+                if (!r.ok) throw new Error('HTTP ' + r.status);
+                return r.text();
+            })
+            .then(function(svgText) {
+                const dataUri = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svgText);
+                modalImage.src = dataUri;
+                svgLoaded = true;
+            })
+            .catch(function(err) {
+                console.warn('[RELEASE] Не удалось загрузить SVG:', err.message);
+                modalImage.alt = 'SVG обновления не найден';
+            });
+    }
+
+    function openModal() {
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+        loadSvgIntoModal();
+    }
+
+    function closeModal() {
+        modal.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+
+    if (openBtn) openBtn.addEventListener('click', openModal);
+    if (closeBtn) closeBtn.addEventListener('click', closeModal);
+
+    modal.addEventListener('click', function(e) {
+        if (e.target === modal) closeModal();
+    });
+
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && modal.classList.contains('active')) closeModal();
+    });
+
 })();
 </script>
 
