@@ -11,10 +11,10 @@
   "ownerId": "1282745893447274507",
   "createdAt": "2026-02-06T22:08:53.377Z",
   "stats24h": {
-    "messages": 51,
+    "messages": 0,
     "voiceMinutes": 0,
-    "activeUsers": 2
+    "activeUsers": 0
   },
-  "updatedAt": "2026-10-12T14:55:58.523Z",
+  "updatedAt": "2026-10-13T16:24:06.027Z",
   "topUsers": []
 }
